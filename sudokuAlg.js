@@ -14,14 +14,15 @@ var Sudoku = ( function ( $ ){
 			// If set to true, the game will validate the numbers
 			// as the player inserts them. If it is set to false,
 			// validation will only happen at the end.
+			// -- doesn't work? allows letters
 			'validate_on_insert': true,
 			// If set to true, the system will display the elapsed
 			// time it took for the solver to finish its operation.
-			'show_solver_timer': false,
+			'show_solver_timer': true,
 			// If set to true, the recursive solver will count the
 			// number of recursions and backtracks it performed and
 			// display them in the console.
-			'show_recursion_counter': false,
+			'show_recursion_counter': true,
 			// If set to true, the solver will test a shuffled array
 			// of possible numbers in each empty input box.
 			// Otherwise, the possible numbers are ordered, which
@@ -62,6 +63,8 @@ var Sudoku = ( function ( $ ){
 			 * Call for a validation of the game board.
 			 * @returns {Boolean} Whether the board is valid
 			 */
+			// -- allows non-numbers!
+			// -- works only from second mistaken number
 			validate: function() {
 				var isValid;
 
@@ -70,23 +73,11 @@ var Sudoku = ( function ( $ ){
 			},
 
 			/**
-			 * Solves the current board and removes numbers.
-			 * No difficulty setting yet.
+			 * Call for the generator routine to generate a board 
+			 * ready for playing.
 			 */
-			generate: function() {
-				var isValid;
-				
-				if ( !_game.validateMatrix() ) {
-					return false;
-				}
-				
-				_game.recursionCounter = 0;
-				_game.backtrackCounter = 0;
-
-				isValid = _game.solveGame( 0, 0 );
-
-				//TODO remove numbers
-
+			generate: function(numEmptyCells) {
+				_game.generator(numEmptyCells);
 			},
 
 			/**
@@ -350,6 +341,7 @@ var Sudoku = ( function ( $ ){
 		 * Validate the entire matrix
 		 * @returns {Boolean} Valid or invalid matrix
 		 */
+		// need to check this thoroughly
 		validateMatrix: function() {
 			var isValid, val, $element,
 				hasError = false;
@@ -421,6 +413,38 @@ var Sudoku = ( function ( $ ){
 				// numbers, call backtrack recursively backwards
 				return false;
 			}
+		},
+
+		/**
+		 * Solves the current board and removes numbers.
+		 * No difficulty setting yet.
+		 */
+		// -- works fine with 1 try
+		// -- need to reset matrices when called multiple times
+		generator: function(numEmptyCells) {
+			var isValid;
+			
+			if ( !_game.validateMatrix() ) {
+				return false;
+			}
+
+			//there is an issue that when validating 
+			//it always returns true
+			isValid = _game.solveGame( 0, 0 );
+
+			for ( var i = 0; i < numEmptyCells; i++ ) {
+				var ranRow = getRandomInt(0, 8);
+				var ranCol = getRandomInt(0, 8);
+
+				if (this.$cellMatrix[ranRow][ranCol].val() != '') {
+					this.$cellMatrix[ranRow][ranCol].val( '' );
+					// TODO -> 
+					// all other matrices get their respective boxes' values set to 0
+				} else {
+					i--;
+				}
+			}
+
 		},
 
 		/**

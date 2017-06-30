@@ -15,7 +15,9 @@
 			$('#container').append(game.getGameBoard());
 
 			$('#generate').click(function() {
-				game.generate();
+				// need to make difficulty setting for number
+				// of empty cells
+				game.generate(40);
 			});
 
 			$('#solve').click(function() {
