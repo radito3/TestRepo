@@ -420,7 +420,7 @@ var Sudoku = ( function ( $ ){
 		 * No difficulty setting yet.
 		 */
 		// -- works fine with 1 try
-		// -- need to reset matrices when called multiple times
+		// -- generator and solver don't work together
 		generator: function(numEmptyCells) {
 			var isValid;
 			
@@ -435,11 +435,15 @@ var Sudoku = ( function ( $ ){
 			for ( var i = 0; i < numEmptyCells; i++ ) {
 				var ranRow = getRandomInt(0, 8);
 				var ranCol = getRandomInt(0, 8);
+				var sectRow = Math.floor( ranRow / 3 );
+				var sectCol = Math.floor( ranCol / 3 );
+				var secIndex = ( ranRow % 3 ) * 3 + ( ranCol % 3 );
 
 				if (this.$cellMatrix[ranRow][ranCol].val() != '') {
 					this.$cellMatrix[ranRow][ranCol].val( '' );
-					// TODO -> 
-					// all other matrices get their respective boxes' values set to 0
+					this.matrix.row[ranRow][ranCol] = '';
+					this.matrix.col[ranRow][ranCol] = '';
+					this.matrix.sect[sectRow][sectCol][secIndex] = '';
 				} else {
 					i--;
 				}
