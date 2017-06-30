@@ -17,11 +17,11 @@ var Sudoku = ( function ( $ ){
 			'validate_on_insert': true,
 			// If set to true, the system will display the elapsed
 			// time it took for the solver to finish its operation.
-			'show_solver_timer': true,
+			'show_solver_timer': false,
 			// If set to true, the recursive solver will count the
 			// number of recursions and backtracks it performed and
 			// display them in the console.
-			'show_recursion_counter': true,
+			'show_recursion_counter': false,
 			// If set to true, the solver will test a shuffled array
 			// of possible numbers in each empty input box.
 			// Otherwise, the possible numbers are ordered, which
@@ -67,6 +67,26 @@ var Sudoku = ( function ( $ ){
 
 				isValid = _game.validateMatrix();
 				$( '.sudoku-container' ).toggleClass( 'valid-matrix', isValid );
+			},
+
+			/**
+			 * Solves the current board and removes numbers.
+			 * No difficulty setting yet.
+			 */
+			generate: function() {
+				var isValid;
+				
+				if ( !_game.validateMatrix() ) {
+					return false;
+				}
+				
+				_game.recursionCounter = 0;
+				_game.backtrackCounter = 0;
+
+				isValid = _game.solveGame( 0, 0 );
+
+				//TODO remove numbers
+
 			},
 
 			/**
@@ -292,7 +312,6 @@ var Sudoku = ( function ( $ ){
 
 			if ( num !== '' ) {
 
-
 				// Validate value
 				if (
 					// Make sure value is numeric
@@ -352,9 +371,7 @@ var Sudoku = ( function ( $ ){
 		},
 
 		/**
-		 * A recursive 'backtrack' solver for the
-		 * game. Algorithm is based on the StackOverflow answer
-		 * http://stackoverflow.com/questions/18168503/recursively-solving-a-sudoku-puzzle-using-backtracking-theoretically
+		 * A recursive 'backtrack' solver for the game. 
 		 */
 		solveGame: function( row, col ) {
 			var cval, sqRow, sqCol, $nextSquare, legalValues,
@@ -439,7 +456,7 @@ var Sudoku = ( function ( $ ){
 				sectRow = Math.floor( row / 3 ),
 				sectCol = Math.floor( col / 3 );
 
-			legalNums = [ 1, 2, 3, 4, 5, 6, 7, 8, 9];
+			legalNums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 			// Check existing numbers in col
 			for ( i = 0; i < 9; i++ ) {
