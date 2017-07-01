@@ -3,7 +3,6 @@
     <head>
         <meta charset="utf-8">
         <title>Sudoku</title>
-        <meta name="description" content="A Javascript implementation of a Sudoku puzzle with a backtracking algorithm.">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="sudokuAlg.js"></script>
 		<link rel="stylesheet" href="game.css">
@@ -12,12 +11,10 @@
 		<script type="text/javascript">
 		$(document).ready(function() {
 			var game = Sudoku.getInstance();
-			$('#container').append(game.getGameBoard());
+			$('#container').append(game.getGameBoard(9));
 
 			$('#generate').click(function() {
-				// need to make difficulty setting for number
-				// of empty cells
-				game.generate(40);
+				game.generate($('#diff_set').val());
 			});
 
 			$('#solve').click(function() {
@@ -34,8 +31,10 @@
 		});
 		</script>
 		<h1>Sudoku</h1>
+		<!-- need to add buttons for 9x9 and 4x4 matrices -->
 		<div id="container"></div>
 		<div id="menu" class="sudoku-menu">
+			<input id="diff_set" type="number" name="difficulty" min="30" max="64" value="30">
 			<button id="generate">Generate</button>
 			<button id="solve">Solve</button>
 			<button id="validate">Validate Board</button>

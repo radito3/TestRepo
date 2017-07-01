@@ -1,7 +1,7 @@
 /**
  * A Javascript implementation of a Sudoku game, including a
- * backtracking algorithm solver. For example usage see the
- * attached index.html demo.
+ * generator for 9x9 and 4x4 matrices and a backtracking 
+ * algorithm solver.
  */
 var Sudoku = ( function ( $ ){
 	var _instance, _game,
@@ -29,9 +29,9 @@ var Sudoku = ( function ( $ ){
 			// means the solver will likely give the same result
 			// when operating in the same game conditions.
 			'solver_shuffle_numbers': true
-		},
-		paused = false,
-		counter = 0;
+
+			// is_generated -- if generator and solver were to work together
+		};
 
 	/**
 	 * Initialize the singleton
@@ -46,10 +46,11 @@ var Sudoku = ( function ( $ ){
 		return {
 			/**
 			 * Return a visual representation of the board
+			 * @param {Number} The size of the board
 			 * @returns {jQuery} Game table
 			 */
-			getGameBoard: function() {
-				return _game.buildGUI();
+			getGameBoard: function(size) {
+				return _game.buildGUI(size);
 			},
 
 			/**
@@ -63,11 +64,9 @@ var Sudoku = ( function ( $ ){
 			 * Call for a validation of the game board.
 			 * @returns {Boolean} Whether the board is valid
 			 */
-			// -- allows non-numbers!
-			// -- works only from second mistaken number
 			validate: function() {
 				var isValid;
-
+				// -- allows non-numbers!
 				isValid = _game.validateMatrix();
 				$( '.sudoku-container' ).toggleClass( 'valid-matrix', isValid );
 			},
@@ -75,8 +74,10 @@ var Sudoku = ( function ( $ ){
 			/**
 			 * Call for the generator routine to generate a board 
 			 * ready for playing.
+			 * @param {Number} Number of cells to erase
 			 */
 			generate: function(numEmptyCells) {
+				// Need to add support for 4x4 matrix
 				_game.generator(numEmptyCells);
 			},
 
@@ -105,6 +106,8 @@ var Sudoku = ( function ( $ ){
 
 				// Visual indication of whether the game was solved
 				$( '.sudoku-container' ).toggleClass( 'valid-matrix', isValid );
+
+				// Disables input to indicate solved matrix
 				if ( isValid ) {
 					$( '.valid-matrix input' ).attr( 'disabled', 'disabled' );
 				}
@@ -146,18 +149,20 @@ var Sudoku = ( function ( $ ){
 	Game.prototype = {
 		/**
 		 * Build the game GUI
+		 * 
+		 * @param {Number} The size of the board
 		 * @returns {jQuery} Table containing 9x9 input matrix
 		 */
-		buildGUI: function() {
+		buildGUI: function(size) {
 			var $td, $tr,
 				$table = $( '<table>' )
 					.addClass( 'sudoku-container' );
 
-			for ( var i = 0; i < 9; i++ ) {
+			for ( var i = 0; i < size; i++ ) {
 				$tr = $( '<tr>' );
 				this.$cellMatrix[i] = {};
 
-				for ( var j = 0; j < 9; j++ ) {
+				for ( var j = 0; j < size; j++ ) {
 					// Build the input
 					this.$cellMatrix[i][j] = $( '<input>' )
 						.attr( 'maxlength', 1 )
@@ -167,8 +172,8 @@ var Sudoku = ( function ( $ ){
 
 					$td = $( '<td>' ).append( this.$cellMatrix[i][j] );
 					// Calculate section ID
-					sectIDi = Math.floor( i / 3 );
-					sectIDj = Math.floor( j / 3 );
+					sectIDi = Math.floor( i / (size % 2 == 0 ? 2 : 3) );
+					sectIDj = Math.floor( j / (size % 2 == 0 ? 2 : 3) );
 					// Set the design for different sections
 					if ( ( sectIDi + sectIDj ) % 2 === 0 ) {
 						$td.addClass( 'sudoku-section-one' );
@@ -187,7 +192,7 @@ var Sudoku = ( function ( $ ){
 
 		/**
 		 * Handle keyup events.
-		 *
+		 * 
 		 * @param {jQuery.event} e Keyup event
 		 */
 		onKeyUp: function( e ) {
@@ -197,6 +202,10 @@ var Sudoku = ( function ( $ ){
 				val = $.trim( $( e.currentTarget ).val() ),
 				row = $( e.currentTarget ).data( 'row' ),
 				col = $( e.currentTarget ).data( 'col' );
+
+			/* need to add error on non-number input
+
+			*/
 
 			// Reset board validation class
 			$( '.sudoku-container' ).removeClass( 'valid-matrix' );
@@ -341,10 +350,8 @@ var Sudoku = ( function ( $ ){
 		 * Validate the entire matrix
 		 * @returns {Boolean} Valid or invalid matrix
 		 */
-		// need to check this thoroughly
 		validateMatrix: function() {
-			var isValid, val, $element,
-				hasError = false;
+			var isValid, val, hasError = false;
 
 			// Go over entire board, and compare to the cached
 			// validation arrays
@@ -417,19 +424,15 @@ var Sudoku = ( function ( $ ){
 
 		/**
 		 * Solves the current board and removes numbers.
-		 * No difficulty setting yet.
+		 * @param {Number} The number of cells to erase
 		 */
-		// -- works fine with 1 try
-		// -- generator and solver don't work together
 		generator: function(numEmptyCells) {
 			var isValid;
-			
+
 			if ( !_game.validateMatrix() ) {
 				return false;
 			}
 
-			//there is an issue that when validating 
-			//it always returns true
 			isValid = _game.solveGame( 0, 0 );
 
 			for ( var i = 0; i < numEmptyCells; i++ ) {
