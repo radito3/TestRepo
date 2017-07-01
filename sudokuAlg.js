@@ -14,7 +14,6 @@ var Sudoku = ( function ( $ ){
 			// If set to true, the game will validate the numbers
 			// as the player inserts them. If it is set to false,
 			// validation will only happen at the end.
-			// -- doesn't work? allows letters
 			'validate_on_insert': true,
 			// If set to true, the system will display the elapsed
 			// time it took for the solver to finish its operation.
@@ -30,7 +29,7 @@ var Sudoku = ( function ( $ ){
 			// when operating in the same game conditions.
 			'solver_shuffle_numbers': true
 
-			// is_generated -- if generator and solver were to work together
+			// 'is_generated' -- if generator and solver were to work together
 		};
 
 	/**
@@ -62,11 +61,9 @@ var Sudoku = ( function ( $ ){
 
 			/**
 			 * Call for a validation of the game board.
-			 * @returns {Boolean} Whether the board is valid
 			 */
 			validate: function() {
 				var isValid;
-				// -- allows non-numbers!
 				isValid = _game.validateMatrix();
 				$( '.sudoku-container' ).toggleClass( 'valid-matrix', isValid );
 			},
@@ -197,15 +194,16 @@ var Sudoku = ( function ( $ ){
 		 */
 		onKeyUp: function( e ) {
 			var sectRow, sectCol, secIndex,
-				starttime, endtime, elapsed,
 				isValid = true,
 				val = $.trim( $( e.currentTarget ).val() ),
 				row = $( e.currentTarget ).data( 'row' ),
 				col = $( e.currentTarget ).data( 'col' );
 
-			/* need to add error on non-number input
-
-			*/
+			// Check for non-number input
+			if (!$.isNumeric( val )) {
+				$( e.currentTarget ).val( '' );
+				return;
+			}
 
 			// Reset board validation class
 			$( '.sudoku-container' ).removeClass( 'valid-matrix' );
@@ -374,7 +372,7 @@ var Sudoku = ( function ( $ ){
 		 */
 		solveGame: function( row, col ) {
 			var cval, sqRow, sqCol, $nextSquare, legalValues,
-				sectRow, sectCol, secIndex, gameResult;
+				sectRow, sectCol, secIndex;
 
 			this.recursionCounter++;
 			$nextSquare = this.findClosestEmptySquare( row, col );
@@ -436,11 +434,11 @@ var Sudoku = ( function ( $ ){
 			isValid = _game.solveGame( 0, 0 );
 
 			for ( var i = 0; i < numEmptyCells; i++ ) {
-				var ranRow = getRandomInt(0, 8);
-				var ranCol = getRandomInt(0, 8);
-				var sectRow = Math.floor( ranRow / 3 );
-				var sectCol = Math.floor( ranCol / 3 );
-				var secIndex = ( ranRow % 3 ) * 3 + ( ranCol % 3 );
+				var ranRow = getRandomInt(0, 8),
+					ranCol = getRandomInt(0, 8),
+					sectRow = Math.floor( ranRow / 3 ),
+					sectCol = Math.floor( ranCol / 3 ),
+					secIndex = ( ranRow % 3 ) * 3 + ( ranCol % 3 );
 
 				if (this.$cellMatrix[ranRow][ranCol].val() != '') {
 					this.$cellMatrix[ranRow][ranCol].val( '' );
@@ -483,7 +481,7 @@ var Sudoku = ( function ( $ ){
 		 * @returns {Array} An array of available numbers
 		 */
 		findLegalValuesForSquare: function( row, col ) {
-			var legalVals, legalNums, val, i,
+			var legalNums, val, i,
 				sectRow = Math.floor( row / 3 ),
 				sectCol = Math.floor( col / 3 );
 
