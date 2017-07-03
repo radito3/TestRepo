@@ -4,7 +4,7 @@
  * algorithm solver.
  */
 var Sudoku = ( function ( $ ){
-	var _instance, _game,
+	var _instance, _game, _size, _starttime, _endtime,
 		/**
 		 * Default configuration options. These can be overriden
 		 * when loading a game instance.
@@ -49,7 +49,8 @@ var Sudoku = ( function ( $ ){
 			 * @returns {jQuery} Game table
 			 */
 			getGameBoard: function(size) {
-				return _game.buildGUI(size);
+				_size = size;
+				return _game.buildGUI();
 			},
 
 			/**
@@ -74,8 +75,24 @@ var Sudoku = ( function ( $ ){
 			 * @param {Number} Number of cells to erase
 			 */
 			generate: function(numEmptyCells) {
+				var starttime, endtime;
 				// Need to add support for 4x4 matrix
 				_game.generator(numEmptyCells);
+
+				// For recording the user time
+				_starttime = Date.now();
+			},
+
+			/**
+			 * Constantly check if game is correctly completed.
+			 */
+			check: function() {
+				// Don't know if to leave it like a loop
+				// Or have it just as a button
+				while (!_game.checker());
+				_endtime = Date.now();
+				// Log the time in database
+				// Send message on screen
 			},
 
 			/**
@@ -139,6 +156,7 @@ var Sudoku = ( function ( $ ){
 		this.resetValidationMatrices();
 		return this;
 	}
+
 	/**
 	 * Game engine prototype methods
 	 * @property {Object}
@@ -147,19 +165,18 @@ var Sudoku = ( function ( $ ){
 		/**
 		 * Build the game GUI
 		 * 
-		 * @param {Number} The size of the board
-		 * @returns {jQuery} Table containing 9x9 input matrix
+		 * @returns {jQuery} Table containing input matrix
 		 */
-		buildGUI: function(size) {
+		buildGUI: function() {
 			var $td, $tr,
 				$table = $( '<table>' )
 					.addClass( 'sudoku-container' );
 
-			for ( var i = 0; i < size; i++ ) {
+			for ( var i = 0; i < _size; i++ ) {
 				$tr = $( '<tr>' );
 				this.$cellMatrix[i] = {};
 
-				for ( var j = 0; j < size; j++ ) {
+				for ( var j = 0; j < _size; j++ ) {
 					// Build the input
 					this.$cellMatrix[i][j] = $( '<input>' )
 						.attr( 'maxlength', 1 )
@@ -169,8 +186,8 @@ var Sudoku = ( function ( $ ){
 
 					$td = $( '<td>' ).append( this.$cellMatrix[i][j] );
 					// Calculate section ID
-					sectIDi = Math.floor( i / (size % 2 == 0 ? 2 : 3) );
-					sectIDj = Math.floor( j / (size % 2 == 0 ? 2 : 3) );
+					sectIDi = Math.floor( i / (_size % 2 == 0 ? 2 : 3) );
+					sectIDj = Math.floor( j / (_size % 2 == 0 ? 2 : 3) );
 					// Set the design for different sections
 					if ( ( sectIDi + sectIDj ) % 2 === 0 ) {
 						$td.addClass( 'sudoku-section-one' );
@@ -368,7 +385,7 @@ var Sudoku = ( function ( $ ){
 		},
 
 		/**
-		 * A recursive 'backtrack' solver for the game. 
+		 * A recursive backtracking solver for the game. 
 		 */
 		solveGame: function( row, col ) {
 			var cval, sqRow, sqCol, $nextSquare, legalValues,
@@ -450,6 +467,23 @@ var Sudoku = ( function ( $ ){
 				}
 			}
 
+		},
+
+		/**
+		 * Check if user has completed the puzzle.
+		 *
+		 * @returns {Boolean} Correctly or incorrectly solved
+		 */
+		checker: function() {
+			for ( var i = 0; i < (_size % 2 == 0 ? 2 : 3); i++ ) {
+				for ( var j = 0; j < (_size % 2 == 0 ? 2 : 3); j++ ) {
+					if (this.$cellMatrix[i][j].val() == '') {
+						return false;
+					}
+				}
+			}
+
+			return _game.validateMatrix();
 		},
 
 		/**

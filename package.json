@@ -1,0 +1,35 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "Online sudoku",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radito3/TestRepo.git"
+  },
+  "author": "Rangel Ivanov",
+  "license": "MIT",
+  "dependencies": {
+      "bcryptjs": "*",
+      "body-parser": "*",
+      "connect-flash": "*",
+      "cookie-parser": "^1.4.1",
+      "express": "*",
+      "express-handlebars": "*",
+      "express-messages": "*",
+      "express-session": "*",
+      "express-validator": "*",
+      "mongodb": "*",
+      "mongoose": "*",
+      "passport": "*",
+      "passport-http": "*",
+      "passport-local": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/radito3/TestRepo/issues"
+  },
+  "homepage": "https://github.com/radito3/TestRepo#readme"
+}

@@ -1,25 +1,24 @@
 <script type="text/javascript">
-	$(document).ready(function() {
-		var game = Sudoku.getInstance();
-		// Need to have choice between 9x9 and 4x4 matrix
-		$('#container').append(game.getGameBoard(9));
+$(document).ready(function() {
+	var game = Sudoku.getInstance();
+	$('#container').append(game.getGameBoard(9));
 
-		$('#generate').click(function() {
-			game.generate($('#diff_set').val());
-		});
-
-		$('#solve').click(function() {
-			game.solve();
-		});
-
-		$('#validate').click(function() {
-			game.validate();
-		});
-
-		$('#reset').click(function() {
-			game.reset();
-		});
+	$('#generate').click(function() {
+		game.generate($('#diff_set').val());
 	});
+
+	$('#solve').click(function() {
+		game.solve();
+	});
+
+	$('#validate').click(function() {
+		game.validate();
+	});
+
+	$('#reset').click(function() {
+		game.reset();
+	});
+});
 </script>
 <h1>Sudoku</h1>
 <!-- need to add buttons for 9x9 and 4x4 matrices -->
