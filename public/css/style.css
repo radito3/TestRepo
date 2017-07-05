@@ -1,7 +1,7 @@
 /* Space out content a bit */
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -70,7 +70,7 @@ body {
   }
   /* Space out the masthead */
   .header {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
@@ -83,7 +83,7 @@ body {
 }
 
 footer {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 button, h1 {
@@ -100,8 +100,8 @@ button, h1 {
 }
 
 .sudoku-menu button {
-  font-size: 24px;
-  margin: 10px;
+  font-size: 20px;
+  margin: 15px;
   padding: 5px;
 }
 
@@ -114,6 +114,7 @@ button, h1 {
 .sudoku-container td {
   margin: 0;
 }
+
 .sudoku-container input {
   width: 40px;
   height: 40px;
@@ -127,10 +128,24 @@ button, h1 {
 .sudoku-container .sudoku-input-error {
   background: #ffc9d7;
 }
+
 .sudoku-container.valid-matrix {
   border: 5px solid #7edb37;
 }
 
+.sudoku-container.invalid-matrix {
+  border: 5px solid #ff3333;
+}
+
 .sudoku-section-one {
   background: #ccc;
+}
+
+#menu {
+  width:100%;
+  text-align: center;
+}
+
+.inner {
+    display: inline-block;
 }

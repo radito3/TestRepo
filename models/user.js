@@ -15,8 +15,10 @@ var UserSchema = mongoose.Schema({
 	},
 	name: {
 		type: String
+	},
+	solveTimes: {
+		type: Array
 	}
-	// maybe completion times
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

@@ -91,10 +91,16 @@ router.post('/login',
 		res.redirect('/');  //should redirect to the sudoku app main page or profile page
 });
 
-router.get('/logout', function(req, res){
+router.get('/logout', function(req, res) {
 	req.logout();
 	req.flash('success_msg', 'You are logged out');
 	res.redirect('/');
 });
+
+router.get('/times', function(req, res) {
+	// Get times from database
+	// db.users.find({user: <current user>}, {times:1})
+	res.render('times');
+})
 
 module.exports = router;

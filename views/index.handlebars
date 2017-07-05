@@ -1,7 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	var game = Sudoku.getInstance();
-	$('#container').append(game.getGameBoard(9));
+	//game.setSize($('#size').val());
+	$('#container').append(game.getGameBoard());
 
 	$('#generate').click(function() {
 		game.generate($('#diff_set').val());
@@ -18,16 +19,26 @@ $(document).ready(function() {
 	$('#reset').click(function() {
 		game.reset();
 	});
+
+	$('#check').click(function() {
+		game.check();
+	})
+
+	/*$('#4by4').click(function() {
+		game.setSize(4);
+		$('#table').remove();
+		$('#container').append(game.getGameBoard());
+	});*/
 });
 </script>
-<h1>Sudoku</h1>
 <!-- need to add buttons for 9x9 and 4x4 matrices -->
 <div id="container"></div>
 <div id="menu" class="sudoku-menu">
-	<input id="diff_set" type="number" name="difficulty" min="30" max="64" value="30">
-	<button id="generate">Generate</button>
-	<button id="solve">Solve</button>
-	<button id="validate">Validate Board</button>
-	<button id="reset">Reset</button>
+	<div class="inner"><input id="diff_set" type="number" name="difficulty" min="30" max="64" value="30"></div>
+	<div class="inner"><button id="generate">Generate</button></div>
+	<div class="inner"><button id="check">Check</button></div>
+	<div class="inner"><button id="solve">Solve</button></div>
+	<div class="inner"><button id="validate">Validate Board</button></div>
+	<div class="inner"><button id="reset">Reset</button></div>
 	<!-- need to add a notification when the game is finished -->
 </div>
