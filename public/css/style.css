@@ -86,7 +86,7 @@ footer {
   margin-top: 30px;
 }
 
-button, h1 {
+h1 {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -111,8 +111,10 @@ button, h1 {
   margin-right: auto;
 }
 
-.sudoku-container td {
-  margin: 0;
+.sudoku-container {
+  margin: 1;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .sudoku-container input {
@@ -142,10 +144,16 @@ button, h1 {
 }
 
 #menu {
-  width:100%;
+  width: 100%;
   text-align: center;
 }
 
 .inner {
     display: inline-block;
+}
+
+td {
+  border: 1px solid #000000;
+  text-align: center;
+  vertical-align: middle;  
 }
