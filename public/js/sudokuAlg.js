@@ -270,6 +270,7 @@ var Sudoku = ( function ( $ ){
 
 			$( '.sudoku-container input' ).removeAttr( 'disabled' );
 			$( '.sudoku-container' ).removeClass( 'valid-matrix' );
+			$( '.sudoku-container' ).removeClass( 'invalid-matrix' );
 		},
 
 		/**
