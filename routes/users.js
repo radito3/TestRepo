@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var MongoClient = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectID;
+var url = 'mongodb://localhost:27017/loginapp'
 
 var User = require('../models/user');
 
@@ -88,7 +91,7 @@ router.post('/login',
 	passport.authenticate('local',
 		{successRedirect:'/', failureRedirect:'/users/login', failureFlash: true}
 	), function(req, res) {
-		res.redirect('/');  //should redirect to the sudoku app main page or profile page
+		res.redirect('/');
 });
 
 router.get('/logout', function(req, res) {
@@ -97,10 +100,36 @@ router.get('/logout', function(req, res) {
 	res.redirect('/');
 });
 
-router.get('/times', function(req, res) {
-	// Get times from database
-	// db.users.find({user: <current user>}, {times:1})
-	res.render('times');
-})
+router.get('/times', loggedIn, function(req, res) {
+	var findRestaurants = function(db, callback) {
+		// Tested, working as intentional
+		var cursor = db.collection('users').find({""+user._id+"": req.user._id}, {times:1});
+		cursor.each(function(err, doc) {
+			if (err) console.log(err);
+			if (doc != null) {
+				console.dir(doc);
+			} else {
+				callback();
+			}
+		});
+	};
+
+	MongoClient.connect(url, function(err, db) {
+		if (err) console.log(err);
+		findRestaurants(db, function() {
+			db.close();
+		});
+	});
+
+	res.render('times'); //should be rendered with the times
+});
+
+function loggedIn(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+}
 
 module.exports = router;

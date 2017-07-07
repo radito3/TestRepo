@@ -29,8 +29,6 @@ var Sudoku = ( function ( $ ){
 			// means the solver will likely give the same result
 			// when operating in the same game conditions.
 			'solver_shuffle_numbers': true
-
-			// 'is_generated' -- if generator and solver were to work together
 		};
 
 	/**
@@ -97,12 +95,16 @@ var Sudoku = ( function ( $ ){
 
 			/**
 			 * Check if game is correctly completed.
+			 * If it is it exports the time.
 			 */
 			check: function() {
 				if ( _game.checker() ) {
 					_endtime = Date.now();
-					// Log the time in database
-					// Send message on screen
+					var elapsed = _endtime - _starttime;
+
+					window.console.log( 'Solver elapsed time: ' + elapsed + 'ms' );
+
+					module.exports = elapsed;
 				} else {
 					$( '.sudoku-container' ).toggleClass( 'invalid-matrix', true );
 				}
@@ -425,6 +427,7 @@ var Sudoku = ( function ( $ ){
 					cval = legalValues[i];
 					// Update value in input
 					$nextSquare.val( cval );
+
 					// Update in matrices
 					this.matrix.row[sqRow][sqCol] = cval;
 					this.matrix.col[sqCol][sqRow] = cval;
