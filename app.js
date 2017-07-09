@@ -10,10 +10,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-//var elapsedTime = require('./public/js/sudokuAlg.js');
-var MongoClient = require('mongodb').MongoClient;
-var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/loginapp';
 
 mongoose.connect('mongodb://localhost/loginapp');
 var db = mongoose.connection;

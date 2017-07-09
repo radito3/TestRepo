@@ -5,7 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/loginapp';
-//var elapsedTime = require('../public/js/sudokuAlg.js'); <- } )( jQuery ); <- jQuery not defined
+var elapsedTime = 20;//require('../public/js/sudokuAlg.js'); <- } )( jQuery ); <- jQuery not defined
 
 router.get('/', function(req, res){
 	res.render('index');

@@ -5,7 +5,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/loginapp';
-
 var User = require('../models/user');
 
 // Login
