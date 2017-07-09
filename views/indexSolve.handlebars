@@ -22,6 +22,10 @@ $(document).ready(function() {
 		game.generate(64);
 	});
 
+	$('#solve').click(function() {
+		game.solve();
+	});
+
 	$('#validate').click(function() {
 		game.validate();
 	});
@@ -41,6 +45,7 @@ $(document).ready(function() {
 	});*/
 });
 </script>
+<!-- dont know if these are needed here -->
 <div>
   <p>Start New Game:</p>
     <button id="easy" class="btn btn-success">Easy</button>
@@ -52,6 +57,7 @@ $(document).ready(function() {
 <div id="container"></div>
 <div id="menu" class="sudoku-menu">
 	<div class="inner"><button id="check" class="btn btn-default">Check</button></div>
+	<div class="inner"><button id="solve" class="btn btn-default">Solve</button></div>
 	<div class="inner"><button id="validate" class="btn btn-default">Validate Board</button></div>
 	<div class="inner"><button id="reset" class="btn btn-default">Reset</button></div>
 </div>

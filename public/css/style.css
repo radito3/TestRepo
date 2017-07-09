@@ -4,19 +4,19 @@ body {
   padding-bottom: 10px;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
 .footer {
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 /* Custom page header */
 .header {
   padding-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 3px solid #e5e5e5;
 }
+
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
   margin-top: 0;
@@ -26,9 +26,9 @@ body {
 
 /* Custom page footer */
 .footer {
-  padding-top: 19px;
+  padding-top: 15px;
   color: #777;
-  border-top: 1px solid #e5e5e5;
+  border-top: 3px solid #e5e5e5;
 }
 
 /* Customize container */
@@ -84,6 +84,7 @@ body {
 
 footer {
   margin-top: 30px;
+  position: absolute;
 }
 
 h1 {
@@ -149,11 +150,27 @@ h1 {
 }
 
 .inner {
-    display: inline-block;
+  display: inline-block;
 }
 
 td {
   border: 1px solid #000000;
   text-align: center;
   vertical-align: middle;  
+}
+
+div > a {
+  font-size: 200%;
+}
+
+a:link {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
 }

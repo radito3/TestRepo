@@ -104,6 +104,7 @@ var Sudoku = ( function ( $ ){
 
 					window.console.log( 'Solver elapsed time: ' + elapsed + 'ms' );
 
+					// This doesn't work properly
 					module.exports = elapsed;
 				} else {
 					$( '.sudoku-container' ).toggleClass( 'invalid-matrix', true );

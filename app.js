@@ -10,7 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
-var elapsedTime = require('./public/js/sudokuAlg.js');
+//var elapsedTime = require('./public/js/sudokuAlg.js');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/loginapp';
@@ -18,6 +18,7 @@ var url = 'mongodb://localhost:27017/loginapp';
 mongoose.connect('mongodb://localhost/loginapp');
 var db = mongoose.connection;
 
+var index = require('./routes/index');
 var users = require('./routes/users');
 
 // Init App
@@ -77,34 +78,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.get('/', function(req, res){
-	res.render('index');
-});
-
-// When the check() operation is successful
-// this should be executed
-// Don't know how though
-app.post('/', function(req, res) {
-	// Tested, working as it should
-	var updateTimes = function(db, callback) {
-		db.collection('users').updateOne(
-			{ "_id" : req.user._id },
-			{ $push: { times: elapsedTime } },
-			function(err, results) {
-				if (err) console.log(err); 
-				console.log(results);
-				callback();
-		});
-	};
-
-	MongoClient.connect(url, function(err, db) {
-		if (err) console.log(err);
-		updateRestaurants(db, function() {
-			db.close();
-		});
-	});
-});
-
+app.use('/', index);
 app.use('/users', users);
 
 // Set Port

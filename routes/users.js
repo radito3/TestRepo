@@ -4,7 +4,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/loginapp'
+var url = 'mongodb://localhost:27017/loginapp';
 
 var User = require('../models/user');
 
@@ -101,12 +101,16 @@ router.get('/logout', function(req, res) {
 });
 
 router.get('/times', loggedIn, function(req, res) {
-	var findRestaurants = function(db, callback) {
-		// Tested, working as intentional
-		var cursor = db.collection('users').find({""+user._id+"": req.user._id}, {times:1});
+	var findTimes = function(db, callback) {
+		// Tested, working
+		var cursor = db.collection('users').find({"_id": ObjectId(req.user._id.toString())}, {times:1});
+		// This returns something strange
 		cursor.each(function(err, doc) {
 			if (err) console.log(err);
 			if (doc != null) {
+
+				console.log(req.user._id); //this is the correct id
+
 				console.dir(doc);
 			} else {
 				callback();
@@ -116,7 +120,7 @@ router.get('/times', loggedIn, function(req, res) {
 
 	MongoClient.connect(url, function(err, db) {
 		if (err) console.log(err);
-		findRestaurants(db, function() {
+		findTimes(db, function() {
 			db.close();
 		});
 	});
