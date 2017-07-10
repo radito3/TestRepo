@@ -42,16 +42,13 @@ var Sudoku = ( function ( $ ){
 
 		/** Public methods **/
 		return {
-
-			// there need to be getters for start and end times
-
 			/**
 			 * Set the board size
 			 * @param {Number} The size of the board
-			 *
+			 */
 			setSize: function(size) {
 				_size = size;
-			},*/
+			},
 
 			/**
 			 * Return a visual representation of the board
@@ -83,12 +80,9 @@ var Sudoku = ( function ( $ ){
 			 * @param {Number} Number of cells to erase
 			 */
 			generate: function(numEmptyCells) {
-				var starttime, endtime;
 				_game.resetGame();
-
 				// Need to add support for 4x4 matrix
 				_game.generator(numEmptyCells);
-
 				// For recording the user time
 				_starttime = Date.now();
 			},
@@ -101,9 +95,7 @@ var Sudoku = ( function ( $ ){
 				if ( _game.checker() ) {
 					_endtime = Date.now();
 					var elapsed = _endtime - _starttime;
-
 					window.console.log( 'Solver elapsed time: ' + elapsed + 'ms' );
-
 					// This doesn't work properly
 					module.exports = elapsed;
 				} else {
