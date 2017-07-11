@@ -13,6 +13,9 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
+            {{#if user}}
+              <li><button id="solver" class="btn btn-default">Solver</button></li>
+            {{/if}}
             <li><button id="4by4" class="btn btn-default">4 by 4</button></li>
             {{#if user}}
               <li role="presentation"><a href="/users/times">Personal times</a></li>
@@ -50,5 +53,11 @@
       </footer>
 
     </div> <!-- /container -->
+
+    <script type="text/javascript">
+      $('#solver').click(() => {
+        $(location).attr('href', '/solver');
+      });
+    </script>
 </body>
 </html>
