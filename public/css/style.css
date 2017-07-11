@@ -2,6 +2,17 @@
 body {
   padding-top: 10px;
   padding-bottom: 10px;
+  background-image: url("http://img09.deviantart.net/d4c8/i/2008/222/9/7/wood_wall_2___print_version_by_oliuss.jpg");
+  background-size: 100%;
+}
+
+#sdk-container {
+  float: left;
+}
+
+#timer-container {
+  background-color: #996633;
+  float: right;
 }
 
 .header,
@@ -85,6 +96,7 @@ body {
 footer {
   margin-top: 30px;
   position: absolute;
+  width: 97%;
 }
 
 h1 {
@@ -142,6 +154,10 @@ h1 {
 
 .sudoku-section-one {
   background: #ccc;
+}
+
+.sudoku-section-two {
+  background: white;
 }
 
 #menu {
