@@ -15,9 +15,6 @@
         <ul class="nav nav-pills pull-right">
           {{#if user}}
             <li><button id="solver" class="btn btn-default">Solver</button></li>
-          {{/if}}
-          <li><button id="4by4" class="btn btn-default">4 by 4</button></li>
-          {{#if user}}
             <li role="presentation"><a href="/users/times">Personal times</a></li>
             <li role="presentation"><a href="/users/logout">Logout</a></li>
           {{else}}
@@ -26,10 +23,10 @@
           {{/if}}
         </ul>
       </nav>
-      <a href="/" class="text-muted">Sudoku Online</a>
+      <a href="/" class="text-muted" style="color: white;">Sudoku Online</a>
     </div>
 
-    <div id="sdk-container" class="row justify-content-start">
+    <div class="row justify-content-start">
       <div class="col-lg-8">
         {{#if success_msg}}
           <div class="alert alert-success">{{success_msg}}</div>
@@ -46,19 +43,16 @@
         {{{body}}}
       </div>
 
-      <div class="col">
-        <div class="container" id="timer-container" style="float: right;">
-          fgdfgdfgdf
-        </div>
-      </div>
-
     </div>
 
   </div>
 
   <div class="container-fluid">
     <footer class="footer">
-      <p>&copy; Sudoku Application </p>
+      <span>
+        <p style="color: white; display: inline-block;">&copy; Sudoku Application </p>
+        <a href="/about" class="pull-right" id="#about"> About </a> 
+      </span>
     </footer>
   </div>
 

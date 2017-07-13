@@ -15,7 +15,7 @@ router.get('/', function(req, res){
 // this should be executed
 // Don't know how though
 router.post('/', function(req, res) {
-	// Tested, working as it should
+	// Tested, working
 	var updateTimes = function(db, callback) {
 		db.collection('users').updateOne(
 			// Need to figure out how to get elapsedTime from sudokuAlg.js
@@ -35,10 +35,6 @@ router.post('/', function(req, res) {
 	});
 });
 
-router.get('/solver', loggedIn, function(req, res) {
-	res.render('indexSolve');
-});
-
 function loggedIn(req, res, next) {
     if (req.user) {
         next();
@@ -46,5 +42,13 @@ function loggedIn(req, res, next) {
         res.redirect('/');
     }
 }
+
+router.get('/solver', loggedIn, function(req, res) {
+	res.render('indexSolve');
+});
+
+router.get('/about', function(req, res) {
+	res.render('about');
+});
 
 module.exports = router;

@@ -1,11 +1,9 @@
 /**
  * A Javascript implementation of a Sudoku game, including a
- * generator for 9x9 and 4x4 matrices and a backtracking 
- * algorithm solver.
+ * generator for 9x9 matrix and a backtracking algorithm solver.
  */
 var Sudoku = ( function ( $ ){
-	var _instance, _game,
-		_size = 9, _starttime, _endtime, _subSize = 3/*_size % 2 == 0 ? 2 : 3*/,
+	var _instance, _game, _starttime, _endtime,
 		/**
 		 * Default configuration options. These can be overriden
 		 * when loading a game instance.
@@ -43,14 +41,6 @@ var Sudoku = ( function ( $ ){
 		/** Public methods **/
 		return {
 			/**
-			 * Set the board size
-			 * @param {Number} The size of the board
-			 */
-			setSize: function(size) {
-				_size = size;
-			},
-
-			/**
 			 * Return a visual representation of the board
 			 * @returns {jQuery} Game table
 			 */
@@ -69,8 +59,7 @@ var Sudoku = ( function ( $ ){
 			 * Call for a validation of the game board.
 			 */
 			validate: function() {
-				var isValid;
-				isValid = _game.validateMatrix();
+				var isValid = _game.validateMatrix();
 				$( '.sudoku-container' ).toggleClass( 'valid-matrix', isValid );
 			},
 
@@ -180,11 +169,11 @@ var Sudoku = ( function ( $ ){
 				$table = $( '<table>' )
 					.addClass( 'sudoku-container' );
 
-			for ( var i = 0; i < _size; i++ ) {
+			for ( var i = 0; i < 9; i++ ) {
 				$tr = $( '<tr>' );
 				this.$cellMatrix[i] = {};
 
-				for ( var j = 0; j < _size; j++ ) {
+				for ( var j = 0; j < 9; j++ ) {
 					// Build the input
 					this.$cellMatrix[i][j] = $( '<input>' )
 						.attr( 'maxlength', 1 )
@@ -194,8 +183,8 @@ var Sudoku = ( function ( $ ){
 
 					$td = $( '<td>' ).append( this.$cellMatrix[i][j] );
 					// Calculate section ID
-					sectIDi = Math.floor( i / _subSize );
-					sectIDj = Math.floor( j / _subSize );
+					sectIDi = Math.floor( i / 3 );
+					sectIDj = Math.floor( j / 3 );
 					// Set the design for different sections
 					if ( ( sectIDi + sectIDj ) % 2 === 0 ) {
 						$td.addClass( 'sudoku-section-one' );
@@ -241,9 +230,9 @@ var Sudoku = ( function ( $ ){
 			}
 
 			// Calculate section identifiers
-			sectRow = Math.floor( row / _subSize );
-			sectCol = Math.floor( col / _subSize );
-			secIndex = ( row % _subSize ) * _subSize + ( col % _subSize );
+			sectRow = Math.floor( row / 3 );
+			sectCol = Math.floor( col / 3 );
+			secIndex = ( row % 3 ) * 3 + ( col % 3 );
 
 			// Cache value in matrix
 			this.matrix.row[row][col] = val;
@@ -256,8 +245,8 @@ var Sudoku = ( function ( $ ){
 		 */
 		resetGame: function() {
 			this.resetValidationMatrices();
-			for ( var row = 0; row < _size; row++ ) {
-				for ( var col = 0; col < _size; col++ ) {
+			for ( var row = 0; row < 9; row++ ) {
+				for ( var col = 0; col < 9; col++ ) {
 					// Reset GUI inputs
 					this.$cellMatrix[row][col].val( '' );
 				}
@@ -276,7 +265,7 @@ var Sudoku = ( function ( $ ){
 			this.validation = { 'row': {}, 'col': {}, 'sect': {} };
 
 			// Build the row/col matrix and validation arrays
-			for ( var i = 0; i < _size; i++ ) {
+			for ( var i = 0; i < 9; i++ ) {
 				this.matrix.row[i] = [ '', '', '', '', '', '', '', '', '' ];
 				this.matrix.col[i] = [ '', '', '', '', '', '', '', '', '' ];
 				this.validation.row[i] = [];
@@ -284,10 +273,10 @@ var Sudoku = ( function ( $ ){
 			}
 
 			// Build the section matrix and validation arrays
-			for ( var row = 0; row < _subSize; row++ ) {
+			for ( var row = 0; row < 3; row++ ) {
 				this.matrix.sect[row] = [];
 				this.validation.sect[row] = {};
-				for ( var col = 0; col < _subSize; col++ ) {
+				for ( var col = 0; col < 3; col++ ) {
 					this.matrix.sect[row][col] = [ '', '', '', '', '', '', '', '', '' ];
 					this.validation.sect[row][col] = [];
 				}
@@ -306,8 +295,8 @@ var Sudoku = ( function ( $ ){
 		validateNumber: function( num, rowID, colID, oldNum ) {
 			var isValid = true,
 				// Section
-				sectRow = Math.floor( rowID / _subSize ),
-				sectCol = Math.floor( colID / _subSize );
+				sectRow = Math.floor( rowID / 3 ),
+				sectCol = Math.floor( colID / 3 );
 
 			// This is given as the matrix component (old value in
 			// case of change to the input) in the case of on-insert
@@ -379,8 +368,8 @@ var Sudoku = ( function ( $ ){
 
 			// Go over entire board, and compare to the cached
 			// validation arrays
-			for ( var row = 0; row < _size; row++ ) {
-				for ( var col = 0; col < _size; col++ ) {
+			for ( var row = 0; row < 9; row++ ) {
+				for ( var col = 0; col < 9; col++ ) {
 					val = this.matrix.row[row][col];
 					// Validate the value
 					isValid = this.validateNumber( val, row, col, val );
@@ -411,9 +400,9 @@ var Sudoku = ( function ( $ ){
 				legalValues = this.findLegalValuesForSquare( sqRow, sqCol );
 
 				// Find the segment id
-				sectRow = Math.floor( sqRow / _subSize );
-				sectCol = Math.floor( sqCol / _subSize );
-				secIndex = ( sqRow % _subSize ) * _subSize + ( sqCol % _subSize );
+				sectRow = Math.floor( sqRow / 3 );
+				sectCol = Math.floor( sqCol / 3 );
+				secIndex = ( sqRow % 3 ) * 3 + ( sqCol % 3 );
 
 				// Try out legal values for this cell
 				for ( var i = 0; i < legalValues.length; i++ ) {
@@ -463,9 +452,9 @@ var Sudoku = ( function ( $ ){
 			for ( var i = 0; i < numEmptyCells; i++ ) {
 				var ranRow = getRandomInt(0, 8),
 					ranCol = getRandomInt(0, 8),
-					sectRow = Math.floor( ranRow / _subSize ),
-					sectCol = Math.floor( ranCol / _subSize ),
-					secIndex = ( ranRow % _subSize ) * _subSize + ( ranCol % _subSize );
+					sectRow = Math.floor( ranRow / 3 ),
+					sectCol = Math.floor( ranCol / 3 ),
+					secIndex = ( ranRow % 3 ) * 3 + ( ranCol % 3 );
 
 				if ( this.$cellMatrix[ranRow][ranCol].val() != '' ) {
 					this.$cellMatrix[ranRow][ranCol].val( '' );
@@ -485,8 +474,8 @@ var Sudoku = ( function ( $ ){
 		 * @returns {Boolean} Correctly or incorrectly solved
 		 */
 		checker: function() {
-			for ( var i = 0; i < _size; i++ ) {
-				for ( var j = 0; j < _size; j++ ) {
+			for ( var i = 0; i < 9; i++ ) {
+				for ( var j = 0; j < 9; j++ ) {
 					if ( this.$cellMatrix[i][j].val() == '' ) {
 						return false;
 					}
@@ -506,9 +495,9 @@ var Sudoku = ( function ( $ ){
 		 */
 		findClosestEmptySquare: function( row, col ) {
 			var walkingRow, walkingCol, found = false;
-			for ( var i = ( col + _size*row ); i < 81; i++ ) {
-				walkingRow = Math.floor( i / _size );
-				walkingCol = i % _size;
+			for ( var i = ( col + 9*row ); i < 81; i++ ) {
+				walkingRow = Math.floor( i / 9 );
+				walkingCol = i % 9;
 				if ( this.matrix.row[walkingRow][walkingCol] === '' ) {
 					found = true;
 					return this.$cellMatrix[walkingRow][walkingCol];
@@ -526,13 +515,13 @@ var Sudoku = ( function ( $ ){
 		 */
 		findLegalValuesForSquare: function( row, col ) {
 			var legalNums, val, i,
-				sectRow = Math.floor( row / _subSize ),
-				sectCol = Math.floor( col / _subSize );
+				sectRow = Math.floor( row / 3 ),
+				sectCol = Math.floor( col / 3 );
 
 			legalNums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 			// Check existing numbers in col
-			for ( i = 0; i < _size; i++ ) {
+			for ( i = 0; i < 9; i++ ) {
 				val = Number( this.matrix.col[col][i] );
 				if ( val > 0 ) {
 					// Remove from array
@@ -543,7 +532,7 @@ var Sudoku = ( function ( $ ){
 			}
 
 			// Check existing numbers in row
-			for ( i = 0; i < _size; i++ ) {
+			for ( i = 0; i < 9; i++ ) {
 				val = Number( this.matrix.row[row][i] );
 				if ( val > 0 ) {
 					// Remove from array
@@ -554,9 +543,9 @@ var Sudoku = ( function ( $ ){
 			}
 
 			// Check existing numbers in section
-			sectRow = Math.floor( row / _subSize );
-			sectCol = Math.floor( col / _subSize );
-			for ( i = 0; i < _size; i++ ) {
+			sectRow = Math.floor( row / 3 );
+			sectCol = Math.floor( col / 3 );
+			for ( i = 0; i < 9; i++ ) {
 				val = Number( this.matrix.sect[sectRow][sectCol][i] );
 				if ( val > 0 ) {
 					// Remove from array
