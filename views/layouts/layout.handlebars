@@ -33,11 +33,17 @@
         {{/if}}
 
         {{#if error_msg}}
-          <div class="alert alert-danger">{{error_msg}}</div>
+          <div class="alert alert-danger alert-dismissable fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <!-- this doesn't close the message for some reason -->
+            {{error_msg}}
+          </div>
         {{/if}}
 
         {{#if error}}
-          <div class="alert alert-danger">{{error}}</div>
+          <div class="alert alert-danger alert-dismissable fade in">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{error}}
+          </div>
         {{/if}}
         
         {{{body}}}

@@ -1,6 +1,12 @@
-<h2>Best Times</h2>
-<div>
-	<ol>
-		<li> :time: seconds </li>
-	</ol>
+<h2 class="page-header" style="color: white;">Best Times</h2>
+<div class="container">
+	{{#if times}}
+		<ol>
+			{{#each times.times}}  {{!-- not sure what the propery that contains the times is called --}}
+				<li> {{this}} seconds </li>
+			{{/each}}
+		</ol>
+	{{else}}
+		<div style="color: white;"> times is undefined or null </div>
+	{{/if}}
 </div>

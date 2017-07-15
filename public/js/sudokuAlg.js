@@ -70,7 +70,6 @@ var Sudoku = ( function ( $ ){
 			 */
 			generate: function(numEmptyCells) {
 				_game.resetGame();
-				// Need to add support for 4x4 matrix
 				_game.generator(numEmptyCells);
 				// For recording the user time
 				_starttime = Date.now();
@@ -84,11 +83,13 @@ var Sudoku = ( function ( $ ){
 				if ( _game.checker() ) {
 					_endtime = Date.now();
 					var elapsed = _endtime - _starttime;
-					window.console.log( 'Solver elapsed time: ' + elapsed + 'ms' );
+					window.console.log( 'User elapsed time: ' + elapsed + 'ms' );
 					// This doesn't work properly
 					module.exports = elapsed;
+					return true;
 				} else {
 					$( '.sudoku-container' ).toggleClass( 'invalid-matrix', true );
+					return false;
 				}
 			},
 

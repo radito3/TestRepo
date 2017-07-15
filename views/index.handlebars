@@ -1,39 +1,44 @@
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(() => {
 	var game = Sudoku.getInstance();
 
 	$('#container').append(game.getGameBoard());
 	// Start game with default difficulty setting of easy
 	game.generate(30);
 
-	$('#easy').click(function() {
+	$('#easy').click(() => {
 		game.generate(30);
 	});
 
-	$('#med').click(function() {
+	$('#med').click(() => {
 		game.generate(45);
 	});
 
-	$('#hard').click(function() {
+	$('#hard').click(() => {
 		game.generate(55);
 	});
 
-	$('#extr').click(function() {
+	$('#extr').click(() => {
 		game.generate(64);
 	});
 
-	$('#validate').click(function() {
+	$('#validate').click(() => {
 		game.validate();
 	});
 
-	$('#reset').click(function() {
+	$('#reset').click(() => {
 		game.reset();
 		game.generate(30);
 	});
 
-	$('#check').click(function() {
-		game.check();
-	})
+	$('#check').click(() => {
+		// fails if there is no user
+		// need to add support for not logged in
+		if (!game.check()) {
+			$(location).attr('href', '/solved');
+			//history.pushState({}, null, '/solved');
+		}
+	});
 });
 </script>
 

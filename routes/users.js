@@ -42,10 +42,9 @@ router.post('/register', function(req, res){
 	} else {
 		var newUser = new User({
 			name: name,
-			email:email,
+			email: email,
 			username: username,
 			password: password
-			//maybe times on sudoku solutions
 		});
 
 		User.createUser(newUser, function(err, user){
@@ -100,22 +99,26 @@ router.get('/logout', function(req, res) {
 });
 
 router.get('/times', loggedIn, function(req, res) {
+	var times;
 	var findTimes = function(db, callback) {
 		// Tested, working
 		var cursor = db.collection('users').find({"_id": ObjectId(req.user._id.toString())}, {times:1});
-		// This returns something strange
 		cursor.each(function(err, doc) {
 			if (err) console.log(err);
 			if (doc != null) {
-
-				console.log(req.user._id); //this is the correct id
-
-				console.dir(doc);
+				for(var key in doc) {
+    				console.log(doc[key]);
+				}
+				// doc has the user id and the array of times
+				// need to get that array and pass it to times.handlebars
+				times = doc;
 			} else {
 				callback();
 			}
 		});
 	};
+
+	
 
 	MongoClient.connect(url, function(err, db) {
 		if (err) console.log(err);
@@ -124,7 +127,7 @@ router.get('/times', loggedIn, function(req, res) {
 		});
 	});
 
-	res.render('times'); //should be rendered with the times
+	res.render('times', {times: times});
 });
 
 function loggedIn(req, res, next) {
