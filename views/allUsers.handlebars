@@ -1,0 +1,12 @@
+<h2 class="page-header" style="color: white;">All Users</h2>
+<div class="container">
+	{{#if users}}
+		<ol>
+			{{#each users}}
+				<li> {{Name}} {{Email}} </li>
+			{{/each}}
+		</ol>
+	{{else}}
+		<div style="color: white;"> Error </div>
+	{{/if}}
+</div>

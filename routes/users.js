@@ -118,8 +118,6 @@ router.get('/times', loggedIn, function(req, res) {
 		});
 	};
 
-	
-
 	MongoClient.connect(url, function(err, db) {
 		if (err) console.log(err);
 		findTimes(db, function() {

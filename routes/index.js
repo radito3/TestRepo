@@ -53,4 +53,42 @@ router.get('/about', function(req, res) {
 	res.render('about');
 });
 
+// untested
+router.get('/allUsers', isAdmin, function(req, res) {
+	var users = [];
+	var getAllUsers = function(db, callback) {
+		var cursor = db.collection('users').find();
+		cursor.each(function(err, doc) {
+			if (err) console.log(err);
+			if (doc != null) {
+				for(var key in doc) {
+    				console.log(doc[key]);
+    				console.log(key);
+				}
+				users.push(doc);
+			} else {
+				callback();
+			}
+		});
+	};
+
+	MongoClient.connect(url, function(err, db) {
+		if (err) console.log(err);
+		getAllUsers(db, function() {
+			db.close();
+		});
+	});
+
+	res.render('allUsers', {users: users});
+});
+
+function isAdmin(req, res, next) {
+    if (req.user.email == "alabala@abv.bg") {
+        next();
+    } else {
+    	req.flash('error_msg', 'You do not have permition to access that page');
+        res.redirect('/');
+    }
+}
+
 module.exports = router;
