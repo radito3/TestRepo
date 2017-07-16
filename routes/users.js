@@ -108,6 +108,7 @@ router.get('/times', loggedIn, function(req, res) {
 			if (doc != null) {
 				for(var key in doc) {
     				console.log(doc[key]);
+    				console.log(key);
 				}
 				// doc has the user id and the array of times
 				// need to get that array and pass it to times.handlebars
