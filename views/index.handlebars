@@ -31,13 +31,14 @@ $(document).ready(() => {
 		game.generate(30);
 	});
 
-	$('#check').click(() => {
-		// fails if there is no user
-		// need to add support for not logged in
+	$('#checkUser').click(() => {
 		if (!game.check()) {
 			$(location).attr('href', '/solved');
-			//history.pushState({}, null, '/solved');
 		}
+	});
+
+	$('#checkNoUser').click(() => {
+		game.check();
 	});
 });
 </script>
@@ -52,7 +53,11 @@ $(document).ready(() => {
 
 <div id="container"></div>
 <div id="menu" class="sudoku-menu">
-	<div class="inner"><button id="check" class="btn btn-default">Check</button></div>
+	{{#if user}}
+		<div class="inner"><button id="checkUser" class="btn btn-default">Check</button></div>
+	{{else}}
+		<div class="inner"><button id="checkNoUser" class="btn btn-default">Check</button></div>
+	{{/if}}
 	<div class="inner"><button id="validate" class="btn btn-default">Validate Board</button></div>
 	<div class="inner"><button id="reset" class="btn btn-default">Reset</button></div>
 </div>

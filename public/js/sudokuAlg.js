@@ -84,8 +84,7 @@ var Sudoku = ( function ( $ ){
 					_endtime = Date.now();
 					var elapsed = _endtime - _starttime;
 					window.console.log( 'User elapsed time: ' + elapsed + 'ms' );
-					// This doesn't work properly
-					module.exports = elapsed;
+					
 					return true;
 				} else {
 					$( '.sudoku-container' ).toggleClass( 'invalid-matrix', true );

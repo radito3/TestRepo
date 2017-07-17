@@ -5,36 +5,32 @@ var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/loginapp';
-var elapsedTime = 20;//require('../public/js/sudokuAlg.js'); <- } )( jQuery ); <- jQuery not defined
+var elapsedTime = 30;//require('../public/js/sudokuAlg.js');
 
 router.get('/', function(req, res){
-	res.render('index', {user: (req.user ? true : false)});
+	res.render('index');
 });
 
 router.get('/solved', function(req, res) {
-	console.log('in solved');
-	// Tested, working
 	var updateTimes = function(db, callback) {
 		db.collection('users').updateOne(
-			// Need to figure out how to get elapsedTime from sudokuAlg.js
 			{"_id": ObjectId(req.user._id.toString())}, {$push: {times: elapsedTime}},
 			function(err, results) {
-				if (err) console.log(err);
-				//console.log(results);  I have confirmed that it works correctly
+				if (err) throw err;
 				callback();
 			}
 		);
 	};
 
 	MongoClient.connect(url, function(err, db) {
-		if (err) console.log(err);
+		if (err) throw err;
 		updateTimes(db, function() {
 			db.close();
 		});
 	});
 
 	req.flash('success_msg', 'Puzzle completed in ' + elapsedTime + ' seconds');
-	res.redirect('/');  // need to not redirect but just show the message and keep the solved puzzle with green border
+	res.redirect('/');
 });
 
 function loggedIn(req, res, next) {
@@ -53,7 +49,6 @@ router.get('/about', function(req, res) {
 	res.render('about');
 });
 
-// untested
 router.get('/allUsers', isAdmin, function(req, res) {
 	var users = [];
 	var getAllUsers = function(db, callback) {
@@ -61,10 +56,6 @@ router.get('/allUsers', isAdmin, function(req, res) {
 		cursor.each(function(err, doc) {
 			if (err) console.log(err);
 			if (doc != null) {
-				for(var key in doc) {
-    				console.log(doc[key]);
-    				console.log(key);
-				}
 				users.push(doc);
 			} else {
 				callback();

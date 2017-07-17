@@ -14,7 +14,9 @@
       <nav>
         <ul class="nav nav-pills pull-right">
           {{#if user}}
-            <li><button id="users" class="btn btn-primary">All Users</button></li>
+            {{#ifEquals user.email "alabala@abv.bg"}}
+              <li><button id="users" class="btn btn-primary">All Users</button></li>
+            {{/ifEquals}}
             <li><button id="solver" class="btn btn-default">Solver</button></li>
             <li role="presentation"><a href="/users/times">Personal times</a></li>
             <li role="presentation"><a href="/users/logout">Logout</a></li>
@@ -34,17 +36,11 @@
         {{/if}}
 
         {{#if error_msg}}
-          <div class="alert alert-danger alert-dismissable fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <!-- this doesn't close the message for some reason -->
-            {{error_msg}}
-          </div>
+          <div class="alert alert-danger">{{error_msg}}</div>
         {{/if}}
 
         {{#if error}}
-          <div class="alert alert-danger alert-dismissable fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            {{error}}
-          </div>
+          <div class="alert alert-danger">{{error}}</div>
         {{/if}}
         
         {{{body}}}
@@ -57,7 +53,7 @@
   <div class="container-fluid">
     <footer class="footer">
       <span>
-        <p style="color: white; display: inline-block;">&copy; Sudoku Application </p>
+        <p style="color: white; display: inline-block;">&copy; Sudoku Application {{year}} </p>
         <a href="/about" class="pull-right" id="#about"> About </a> 
       </span>
     </footer>

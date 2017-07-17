@@ -8,17 +8,17 @@ var url = 'mongodb://localhost:27017/loginapp';
 var User = require('../models/user');
 
 // Login
-router.get('/login', function(req, res){
+router.get('/login', function(req, res) {
 	res.render('login');
 });
 
 // Register
-router.get('/register', function(req, res){
+router.get('/register', function(req, res) {
 	res.render('register');
 });
 
 // Register User
-router.post('/register', function(req, res){
+router.post('/register', function(req, res) {
 	var name = req.body.name;
 	var email = req.body.email;
 	var username = req.body.username;
@@ -35,8 +35,8 @@ router.post('/register', function(req, res){
 
 	var errors = req.validationErrors();
 
-	if(errors){
-		res.render('register',{
+	if(errors) {
+		res.render('register', {
 			errors:errors
 		});
 	} else {
@@ -47,7 +47,7 @@ router.post('/register', function(req, res){
 			password: password
 		});
 
-		User.createUser(newUser, function(err, user){
+		User.createUser(newUser, function(err, user) {
 			if(err) throw err;
 		});
 
@@ -58,15 +58,15 @@ router.post('/register', function(req, res){
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		User.getUserByUsername(username, function(err, user){
+		User.getUserByUsername(username, function(err, user) {
 			if(err) throw err;
-			if(!user){
+			if(!user) {
 				return done(null, false, {message: 'Unknown User'});
 			}
 
-		User.comparePassword(password, user.password, function(err, isMatch){
+		User.comparePassword(password, user.password, function(err, isMatch) {
 			if(err) throw err;
-			if(isMatch){
+			if(isMatch) {
 				return done(null, user);
 			} else {
 				return done(null, false, {message: 'Invalid password'});
@@ -99,20 +99,13 @@ router.get('/logout', function(req, res) {
 });
 
 router.get('/times', loggedIn, function(req, res) {
-	var times;
+	var userInfo; // remains undefined in html file
 	var findTimes = function(db, callback) {
-		// Tested, working
 		var cursor = db.collection('users').find({"_id": ObjectId(req.user._id.toString())}, {times:1});
 		cursor.each(function(err, doc) {
 			if (err) console.log(err);
 			if (doc != null) {
-				for(var key in doc) {
-    				console.log(doc[key]);
-    				console.log(key);
-				}
-				// doc has the user id and the array of times
-				// need to get that array and pass it to times.handlebars
-				times = doc;
+				userInfo = doc;
 			} else {
 				callback();
 			}
@@ -126,7 +119,7 @@ router.get('/times', loggedIn, function(req, res) {
 		});
 	});
 
-	res.render('times', {times: times});
+	res.render('times', {userInfo: userInfo});
 });
 
 function loggedIn(req, res, next) {
