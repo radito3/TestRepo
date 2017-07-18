@@ -3,7 +3,7 @@
  * generator for 9x9 matrix and a backtracking algorithm solver.
  */
 var Sudoku = ( function ( $ ){
-	var _instance, _game, _starttime, _endtime,
+	var _instance, _game,
 		/**
 		 * Default configuration options. These can be overriden
 		 * when loading a game instance.
@@ -77,14 +77,9 @@ var Sudoku = ( function ( $ ){
 
 			/**
 			 * Check if game is correctly completed.
-			 * If it is it exports the time.
 			 */
 			check: function() {
 				if ( _game.checker() ) {
-					_endtime = Date.now();
-					var elapsed = _endtime - _starttime;
-					window.console.log( 'User elapsed time: ' + elapsed + 'ms' );
-					
 					return true;
 				} else {
 					$( '.sudoku-container' ).toggleClass( 'invalid-matrix', true );
@@ -409,12 +404,12 @@ var Sudoku = ( function ( $ ){
 					cval = legalValues[i];
 					// Update value in input
 					$nextSquare.val( cval );
-
+					// Disable input on that cell
+					$nextSquare.attr( 'disabled', 'disabled' );
 					// Update in matrices
 					this.matrix.row[sqRow][sqCol] = cval;
 					this.matrix.col[sqCol][sqRow] = cval;
 					this.matrix.sect[sectRow][sectCol][secIndex] = cval;
-
 					// Recursively keep trying
 					if ( this.solveGame( sqRow, sqCol ) ) {
 						return true;
@@ -458,6 +453,7 @@ var Sudoku = ( function ( $ ){
 
 				if ( this.$cellMatrix[ranRow][ranCol].val() != '' ) {
 					this.$cellMatrix[ranRow][ranCol].val( '' );
+					this.$cellMatrix[ranRow][ranCol].removeAttr( 'disabled' );
 					this.matrix.row[ranRow][ranCol] = '';
 					this.matrix.col[ranRow][ranCol] = '';
 					this.matrix.sect[sectRow][sectCol][secIndex] = '';

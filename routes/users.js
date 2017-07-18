@@ -103,7 +103,7 @@ router.get('/times', loggedIn, function(req, res) {
 	var findTimes = function(db, callback) {
 		var cursor = db.collection('users').find({"_id": ObjectId(req.user._id.toString())}, {times:1});
 		cursor.each(function(err, doc) {
-			if (err) console.log(err);
+			if (err) throw err;
 			if (doc != null) {
 				userInfo = doc;
 			} else {
@@ -113,7 +113,7 @@ router.get('/times', loggedIn, function(req, res) {
 	};
 
 	MongoClient.connect(url, function(err, db) {
-		if (err) console.log(err);
+		if (err) throw err;
 		findTimes(db, function() {
 			db.close();
 		});

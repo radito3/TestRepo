@@ -5,16 +5,16 @@ var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var url = 'mongodb://localhost:27017/loginapp';
-var elapsedTime = 30;//require('../public/js/sudokuAlg.js');
 
 router.get('/', function(req, res){
 	res.render('index');
 });
 
 router.get('/solved', function(req, res) {
+	var elapsed = process.elapsed; //undefined
 	var updateTimes = function(db, callback) {
 		db.collection('users').updateOne(
-			{"_id": ObjectId(req.user._id.toString())}, {$push: {times: elapsedTime}},
+			{"_id": ObjectId(req.user._id.toString())}, {$push: {times: elapsed}},
 			function(err, results) {
 				if (err) throw err;
 				callback();
@@ -29,7 +29,7 @@ router.get('/solved', function(req, res) {
 		});
 	});
 
-	req.flash('success_msg', 'Puzzle completed in ' + elapsedTime + ' seconds');
+	req.flash('success_msg', 'Puzzle completed in ' + elapsed + ' seconds');
 	res.redirect('/');
 });
 

@@ -2,6 +2,8 @@
 $(document).ready(() => {
 	var game = Sudoku.getInstance();
 
+	window.startTime = Date.now();
+
 	$('#container').append(game.getGameBoard());
 	// Start game with default difficulty setting of easy
 	game.generate(30);
@@ -33,6 +35,7 @@ $(document).ready(() => {
 
 	$('#checkUser').click(() => {
 		if (!game.check()) {
+			window.elapsed = Date.now() - window.startTime;
 			$(location).attr('href', '/solved');
 		}
 	});
