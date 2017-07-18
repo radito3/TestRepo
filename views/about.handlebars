@@ -1,10 +1,49 @@
 <h2 class="page-header" style="color: white;">About this project</h2>
-<div class="jumbotron">
-  Hello
-  
-  </br>
-  <a href="/"> Link to YouTube video </a>
-  </br>
-  <a href="/"> Link to Wiki page </a>
+<div class="jumbotron" style="text-align: left;"><pre>
+The Sudoku Application is a Software Engineering 2017 project. 
+
+It consists of a Sudoku generator with varying difficulty levels (number of empty boxes),
+a solving algorithm using backtracking and a Login and Registration system using
+a database to store user information.
+
+This product is still in development and is not completed,
+therefore it can experience minor bugs and/or exceptions.
+
+The login system has 2 levels of access - regular user and admin.
+
+The main menu consists of 10 buttons and a link when the User is not logged in and 11 buttons
+(12 for Admin) and a link when logged in. This is excluding the puzzle itself.
+It has as much input fields as there are empty boxes.
+
+The solving algorithm uses a method called ‘Backtracking’. What it essentially does is try a
+number in the next closest empty square compared to the one being checked and if that number
+abides by the rules of Sudoku it is saved in that box. Next it tries the next closest box and so on.
+When, in an empty box, it has tried all numbers from 1 to 9 and none of them obey the rules, it
+goes back one box. If in that box there are legal numbers it continues, if not it goes back one
+more. From a programmer’s perspective this is done with Recursion. The method that does the
+checking of legal numbers and checks for empty cells (boxes) calls itself when it has not
+encountered a problem. When there is a problem, the program’s execution goes back in the
+‘recursive tree’ and tries again.
+
+The generator solves the board and erases n numbers. N is the difficulty (number of empty cells)
+ranging from 30 (easiest) to 64 (hardest).
+
+The 'Personal Times' functionality is a page where the solution times of the logged in user are
+displayed. These times are recorded as the difference in time in which the user starts a
+puzzle and when he finishes it.
+
+The 'Solver' functionality is a showcase for the solving algorithm.
+To get to the solver page, the user must click the button in the top navbar named Solver.
+It will then open a page with a blank matrix in which the user can enter numbers if he wants
+or just press the Solve button bellow it.
+The solver will solve the current board.
+The user may reset it if he wants.
+Each iteration of the solver routine has a default setting that randomizes the numbers so that
+the same solution is not displyed multiple times.
+</pre>
+  <br />
+  <a href="https://www.youtube.com/watch?v=1EsTc0EqVxs"> Link to YouTube video </a>
+  <br />
+  <a href="https://sudokuapplication.wikispaces.com/"> Link to Wiki page </a>
   </br>
 </div>
