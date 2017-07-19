@@ -71,8 +71,6 @@ var Sudoku = ( function ( $ ){
 			generate: function(numEmptyCells) {
 				_game.resetGame();
 				_game.generator(numEmptyCells);
-				// For recording the user time
-				_starttime = Date.now();
 			},
 
 			/**
