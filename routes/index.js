@@ -11,7 +11,7 @@ router.get('/', function(req, res){
 });
 
 router.get('/solved', function(req, res) {
-	var elapsed = process.elapsed; //undefined
+	var elapsed = 30;//process.elapsed; //undefined
 	var updateTimes = function(db, callback) {
 		db.collection('users').updateOne(
 			{"_id": ObjectId(req.user._id.toString())}, {$push: {times: elapsed}},

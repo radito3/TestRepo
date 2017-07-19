@@ -34,7 +34,7 @@ $(document).ready(() => {
 	});
 
 	$('#checkUser').click(() => {
-		if (!game.check()) {
+		if (game.check()) {
 			window.elapsed = Date.now() - window.startTime;
 			$(location).attr('href', '/solved');
 		}
